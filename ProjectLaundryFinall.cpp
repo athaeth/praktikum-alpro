@@ -69,44 +69,53 @@ bool validasiJenisPakaian(const string& jenis) {
     return cariIndeksJenis(jenis) != -1;
 }
 
-// Fungsi input data laundry pelanggan
+// Fungsi input data laundry pelanggan (bisa input banyak sekaligus)
 void inputData() {
-    if (jumlahData >= MAX) {
-        cout << "Data sudah penuh, tidak bisa tambah lagi.\n";
+    int jumlahInput;
+    cout << "\n--- Input Data Laundry ---\n";
+    cout << "Ingin input berapa data laundry? ";
+    cin >> jumlahInput;
+    clearInputBuffer();
+
+    if (jumlahData + jumlahInput > MAX) {
+        cout << "Data melebihi kapasitas maksimum. Sisa slot yang tersedia: " << (MAX - jumlahData) << "\n";
         return;
     }
-    clearInputBuffer();
-    string nama, jenis;
-    float berat;
-    cout << "\n--- Input Data Laundry ---\n";
-    cout << "Masukkan nama pelanggan: ";
-    getline(cin, nama);
 
-    do {
-        cout << "Masukkan jenis pakaian (Baju/Celana/Jaket/Selimut/Karpet): ";
-        getline(cin, jenis);
-        if (!validasiJenisPakaian(jenis)) {
-            cout << "Jenis pakaian tidak valid. Silakan coba lagi.\n";
-        }
-    } while (!validasiJenisPakaian(jenis));
+    for (int i = 0; i < jumlahInput; i++) {
+        cout << "\nData ke-" << (jumlahData + 1) << ":\n";
+        string nama, jenis;
+        float berat;
 
-    do {
-        cout << "Masukkan berat pakaian (kg, > 0): ";
-        cin >> berat;
-        if (berat <= 0) {
-            cout << "Berat harus lebih dari 0. Silakan coba lagi.\n";
+        cout << "Masukkan nama pelanggan: ";
+        getline(cin, nama);
+
+        do {
+            cout << "Masukkan jenis pakaian (Baju/Celana/Jaket/Selimut/Karpet): ";
+            getline(cin, jenis);
+            if (!validasiJenisPakaian(jenis)) {
+                cout << "Jenis pakaian tidak valid. Silakan coba lagi.\n";
+            }
+        } while (!validasiJenisPakaian(jenis));
+
+        do {
+            cout << "Masukkan berat pakaian (kg, > 0): ";
+            cin >> berat;
+            if (berat <= 0) {
+                cout << "Berat harus lebih dari 0. Silakan coba lagi.\n";
+            }
             clearInputBuffer();
-        }
-    } while (berat <= 0);
+        } while (berat <= 0);
 
-    // Simpan data ke array utama
-    data[jumlahData].namaPelanggan = nama;
-    data[jumlahData].jenisPakaian = jenis;
-    data[jumlahData].berat = berat;
-    hitungTotal(data[jumlahData]);
-    jumlahData++;
+        // Simpan ke array
+        data[jumlahData].namaPelanggan = nama;
+        data[jumlahData].jenisPakaian = jenis;
+        data[jumlahData].berat = berat;
+        hitungTotal(data[jumlahData]);
+        jumlahData++;
 
-    cout << "Data berhasil ditambahkan!\n";
+        cout << "Data ke-" << jumlahData << " berhasil ditambahkan!\n";
+    }
 }
 
 // Fungsi swap untuk struct DataLaundry (pointer versi)
