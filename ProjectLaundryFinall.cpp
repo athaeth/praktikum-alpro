@@ -384,22 +384,25 @@ void kelompokkanData() {
     }
 }
 
-// Fungsi menampilkan data berdasarkan pengelompokan jenis pakaian
-void tampilkanDataByJenis() {
-    kelompokkanData();
-    cout << "\n--- Data Laundry Berdasarkan Jenis Pakaian ---\n";
-    for (int i = 0; i < MAX_JENIS; i++) {
-        if (jumlahPerJenis[i] > 0) {
-            cout << "\nJenis Pakaian: " << daftarJenis[i].nama << "\n";
-            cetakHeaderTabel();
-            for (int j = 0; j < jumlahPerJenis[i]; j++) {
-                cout << left << setw(20) << dataByJenis[i][j].namaPelanggan
-                     << setw(12) << dataByJenis[i][j].jenisPakaian
-                     << setw(8) << fixed << setprecision(2) << dataByJenis[i][j].berat
-                     << " Rp " << setw(10) << right << dataByJenis[i][j].totalHarga << endl;
-            }
-            cout << string(54, '-') << endl;
-        }
+void searchingmenu() {
+    int pil;
+    cout << "\n Mau Searching pakai metode apa?" << endl;
+    cout << " 1. Sequential Search" << endl;
+    cout << " 2. Binary Search" << endl;
+    cout << " Pilihan : "; cin >> pil;
+
+    switch (pil)
+    {
+    case 1:
+        sequentialSearch();
+        break;
+    
+    case 2:
+        binarySearchWrapper();
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -410,24 +413,34 @@ void menu() {
         cout << "\n=== PROGRAM LAUNDRY ===\n";
         cout << "1. Input Data Laundry\n";
         cout << "2. Tampilkan Data Laundry\n";
-        cout << "3. Pencarian Sequential\n";
-        cout << "4. Pencarian Binary\n";
-        cout << "5. Tampilkan Data Berdasarkan Jenis Pakaian\n";
-        cout << "6. Simpan Data ke File\n";
-        cout << "7. Baca Data dari File\n";
+        cout << "3. Searching\n";
+        cout << "4. Simpan Data ke File\n";
+        cout << "5. Baca Data dari File\n";
         cout << "0. Keluar\n";
         cout << "Pilih menu: ";
         cin >> pilihan;
         switch (pilihan) {
-            case 1: inputData(); break;
-            case 2: tampilkanData(); break;
-            case 3: sequentialSearch(); break;
-            case 4: binarySearchWrapper(); break;
-            case 5: tampilkanDataByJenis(); break;
-            case 6: simpanFile(); break;
-            case 7: bacaFile(); break;
-            case 0: cout << "Terima kasih sudah menggunakan program ini.\n"; break;
-            default: cout << "Pilihan tidak valid, silakan coba lagi.\n"; break;
+            case 1: inputData(); 
+            break;
+
+            case 2: tampilkanData(); 
+            break;
+
+            case 3: searchingmenu(); 
+            break;
+
+            case 4: simpanFile(); 
+            break;
+
+            case 5: bacaFile(); 
+            break;
+
+            case 0: cout << "Terima kasih sudah menggunakan program ini.\n"; 
+            break;
+
+            default: cout << "Pilihan tidak valid, silakan coba lagi.\n"; 
+            break;
+
         }
     } while (pilihan != 0);
 }
