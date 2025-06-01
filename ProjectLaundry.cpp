@@ -1,3 +1,7 @@
+// Program Manajemen Data Laundry Lengkap
+// Fitur: CRUD, Sorting, Searching, File Handling, Rekursif, dsb.
+
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -14,7 +18,8 @@ struct Cucian {
 
 const float HARGA_PER_KG = 7000.0;
 
-void inputData(Cucian *laundry, int jumlah, int idxAwal) {
+void inputData(Cucian *laundry, int jumlah, int idxAwal) 
+{
     for (int i = 0; i < jumlah; i++) {
         laundry[i + idxAwal].id = idxAwal + i + 1;
         cout << "Data ke-" << i + 1 << endl;
@@ -29,7 +34,8 @@ void inputData(Cucian *laundry, int jumlah, int idxAwal) {
     }
 }
 
-void tampilkanData(Cucian *laundry, int jumlah) {
+void tampilkanData(Cucian *laundry, int jumlah) 
+{
     if (jumlah == 0) {
         cout << "Belum ada data cucian.\n";
         return;
@@ -46,7 +52,8 @@ void tampilkanData(Cucian *laundry, int jumlah) {
     }
 }
 
-int sequentialSearch(Cucian *laundry, int jumlah, string keyword) {
+int sequentialSearch(Cucian *laundry, int jumlah, string keyword) 
+{
     for (int i = 0; i < jumlah; i++) {
         if (laundry[i].nama_pelanggan == keyword) {
             return i;
@@ -55,7 +62,8 @@ int sequentialSearch(Cucian *laundry, int jumlah, string keyword) {
     return -1;
 }
 
-int binarySearch(Cucian *laundry, int kiri, int kanan, string keyword) {
+int binarySearch(Cucian *laundry, int kiri, int kanan, string keyword) 
+{
     while (kiri <= kanan) {
         int tengah = (kiri + kanan) / 2;
         if (laundry[tengah].nama_pelanggan == keyword)
@@ -68,7 +76,8 @@ int binarySearch(Cucian *laundry, int kiri, int kanan, string keyword) {
     return -1;
 }
 
-void bubbleSort(Cucian *laundry, int jumlah) {
+void bubbleSort(Cucian *laundry, int jumlah) 
+{
     for (int i = 0; i < jumlah - 1; i++) {
         for (int j = 0; j < jumlah - i - 1; j++) {
             if (laundry[j].nama_pelanggan > laundry[j + 1].nama_pelanggan) {
@@ -78,7 +87,8 @@ void bubbleSort(Cucian *laundry, int jumlah) {
     }
 }
 
-void selectionSort(Cucian *laundry, int jumlah) {
+void selectionSort(Cucian *laundry, int jumlah) 
+{
     for (int i = 0; i < jumlah - 1; i++) {
         int minIdx = i;
         for (int j = i + 1; j < jumlah; j++) {
@@ -90,7 +100,8 @@ void selectionSort(Cucian *laundry, int jumlah) {
     }
 }
 
-void insertionSort(Cucian *laundry, int jumlah) {
+void insertionSort(Cucian *laundry, int jumlah) 
+{
     for (int i = 1; i < jumlah; i++) {
         Cucian key = laundry[i];
         int j = i - 1;
@@ -102,7 +113,8 @@ void insertionSort(Cucian *laundry, int jumlah) {
     }
 }
 
-void merge(Cucian *laundry, int kiri, int tengah, int kanan) {
+void merge(Cucian *laundry, int kiri, int tengah, int kanan) 
+{
     int n1 = tengah - kiri + 1;
     int n2 = kanan - tengah;
 
@@ -131,7 +143,8 @@ void merge(Cucian *laundry, int kiri, int tengah, int kanan) {
     delete[] R;
 }
 
-void mergeSort(Cucian *laundry, int kiri, int kanan) {
+void mergeSort(Cucian *laundry, int kiri, int kanan) 
+{
     if (kiri < kanan) {
         int tengah = (kiri + kanan) / 2;
         mergeSort(laundry, kiri, tengah);
@@ -140,7 +153,8 @@ void mergeSort(Cucian *laundry, int kiri, int kanan) {
     }
 }
 
-int partition(Cucian *laundry, int low, int high) {
+int partition(Cucian *laundry, int low, int high) 
+{
     string pivot = laundry[high].nama_pelanggan;
     int i = low - 1;
     for (int j = low; j < high; j++) {
@@ -153,7 +167,8 @@ int partition(Cucian *laundry, int low, int high) {
     return i + 1;
 }
 
-void quickSort(Cucian *laundry, int low, int high) {
+void quickSort(Cucian *laundry, int low, int high) 
+{
     if (low < high) {
         int pi = partition(laundry, low, high);
         quickSort(laundry, low, pi - 1);
@@ -161,7 +176,8 @@ void quickSort(Cucian *laundry, int low, int high) {
     }
 }
 
-void shellSort(Cucian *laundry, int jumlah) {
+void shellSort(Cucian *laundry, int jumlah) 
+{
     for (int gap = jumlah / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < jumlah; i++) {
             Cucian temp = laundry[i];
@@ -173,7 +189,61 @@ void shellSort(Cucian *laundry, int jumlah) {
     }
 }
 
-void simpanKeFile(Cucian *laundry, int jumlah) {
+
+// ======================== FUNGSI TAMBAHAN ========================
+// Fungsi untuk menghitung total pendapatan laundry secara rekursif
+float totalPendapatan(Cucian *laundry, int n) 
+{
+    if (n <= 0) return 0;
+    return laundry[n-1].total_harga + totalPendapatan(laundry, n - 1);
+}
+
+// Fungsi untuk mengedit data cucian berdasarkan ID
+void editData(Cucian *laundry, int jumlah) 
+{
+    int id;
+    cout << "Masukkan ID cucian yang ingin diedit: ";
+    cin >> id;
+    bool ditemukan = false;
+    for (int i = 0; i < jumlah; i++) {
+        if (laundry[i].id == id) {
+            cin.ignore();
+            cout << "Nama Baru: "; getline(cin, laundry[i].nama_pelanggan);
+            cout << "Jenis Pakaian Baru: "; getline(cin, laundry[i].jenis_pakaian);
+            cout << "Berat Baru: "; cin >> laundry[i].berat;
+            laundry[i].total_harga = laundry[i].berat * HARGA_PER_KG;
+            cout << "Data berhasil diupdate!\n";
+            ditemukan = true;
+            break;
+        }
+    }
+    if (!ditemukan) cout << "Data dengan ID tsb tidak ditemukan.\n";
+}
+
+// Fungsi untuk menghapus data cucian berdasarkan ID
+void hapusData(Cucian *laundry, int &jumlah) 
+{
+    int id;
+    cout << "Masukkan ID cucian yang ingin dihapus: ";
+    cin >> id;
+    bool ditemukan = false;
+    for (int i = 0; i < jumlah; i++) {
+        if (laundry[i].id == id) {
+            for (int j = i; j < jumlah - 1; j++) {
+                laundry[j] = laundry[j + 1];
+            }
+            jumlah--;
+            cout << "Data berhasil dihapus.\n";
+            ditemukan = true;
+            break;
+        }
+    }
+    if (!ditemukan) cout << "Data tidak ditemukan.\n";
+}
+
+// ====================== AKHIR FUNGSI TAMBAHAN ====================
+void simpanKeFile(Cucian *laundry, int jumlah) 
+{
     ofstream file("laundry.txt");
     for (int i = 0; i < jumlah; i++) {
         file << laundry[i].id << "," << laundry[i].nama_pelanggan << ","
@@ -184,7 +254,8 @@ void simpanKeFile(Cucian *laundry, int jumlah) {
     cout << "Data berhasil disimpan ke file.\n";
 }
 
-int loadDataDariFile(Cucian *laundry, int maxData) {
+int loadDataDariFile(Cucian *laundry, int maxData) 
+{
     ifstream file("laundry.txt");
     string line;
     int count = 0;
@@ -213,12 +284,14 @@ int loadDataDariFile(Cucian *laundry, int maxData) {
     cout << "Data berhasil dibaca dari file.\n";
     return count;
 }
-int main() {
+int main() 
+{
     const int MAX = 100;
     Cucian laundry[MAX];
     int jumlahData = 0;
 
     int pilihan;
+
     do {
         cout << "\n==== MENU LAUNDRY ====\n";
         cout << "1. Input Data Cucian\n";
@@ -227,7 +300,10 @@ int main() {
         cout << "4. Sorting Data\n";
         cout << "5. Simpan Data ke File\n";
         cout << "6. Baca Data dari File\n";
-        cout << "7. Keluar\n";
+        cout << "7. Edit Data Cucian\n";
+        cout << "8. Hapus Data Cucian\n";
+        cout << "9. Hitung Total Pendapatan (Rekursif)\n";
+        cout << "10. Keluar\n";
         cout << "Pilih menu: ";
         cin >> pilihan;
 
@@ -244,9 +320,11 @@ int main() {
                 }
                 break;
             }
+
             case 2:
                 tampilkanData(laundry, jumlahData);
                 break;
+
             case 3: {
                 string keyword;
                 cout << "Masukkan nama pelanggan yang dicari: ";
@@ -262,7 +340,9 @@ int main() {
                     cout << "Data tidak ditemukan.\n";
                 }
                 break;
+
             }
+
             case 4: {
                 int metodeSort;
                 cout << "Metode sorting:\n1. Bubble\n2. Selection\n3. Insertion\n4. Merge\n5. Quick\n6. Shell\nPilihan: ";
@@ -280,13 +360,32 @@ int main() {
                 cout << "Data berhasil disorting.\n";
                 break;
             }
+
             case 5:
                 simpanKeFile(laundry, jumlahData);
                 break;
+
             case 6:
                 jumlahData = loadDataDariFile(laundry, MAX);
                 break;
+
             case 7:
+                editData(laundry, jumlahData);
+                break;
+
+            case 8:
+                hapusData(laundry, jumlahData);
+                break;
+
+            case 9:
+                cout << "Total Pendapatan: Rp" << totalPendapatan(laundry, jumlahData) << "\n";
+                break;
+
+            case 10:
+                cout << "Terima kasih telah menggunakan program Laundry!\n";
+                break;
+
+            case 11:
                 cout << "Terima kasih!\n";
                 break;
             default:
