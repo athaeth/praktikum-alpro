@@ -26,10 +26,13 @@ void inputData(Cucian *laundry, int jumlah, int idxAwal)
         cout << "Nama Pelanggan: ";
         cin.ignore();
         getline(cin, laundry[i + idxAwal].nama_pelanggan);
+
         cout << "Jenis Pakaian: ";
         getline(cin, laundry[i + idxAwal].jenis_pakaian);
+
         cout << "Berat (kg): ";
         cin >> laundry[i + idxAwal].berat;
+
         laundry[i + idxAwal].total_harga = laundry[i + idxAwal].berat * HARGA_PER_KG;
     }
 }
@@ -42,7 +45,9 @@ void tampilkanData(Cucian *laundry, int jumlah)
     }
 
     cout << "\n=== DATA CUCIAN ===\n";
-    for (int i = 0; i < jumlah; i++) {
+
+    for (int i = 0; i < jumlah; i++) 
+        {
         cout << "ID: " << laundry[i].id << endl;
         cout << "Nama: " << laundry[i].nama_pelanggan << endl;
         cout << "Jenis Pakaian: " << laundry[i].jenis_pakaian << endl;
@@ -68,8 +73,10 @@ int binarySearch(Cucian *laundry, int kiri, int kanan, string keyword)
         int tengah = (kiri + kanan) / 2;
         if (laundry[tengah].nama_pelanggan == keyword)
             return tengah;
+            
         else if (laundry[tengah].nama_pelanggan < keyword)
             kiri = tengah + 1;
+            
         else
             kanan = tengah - 1;
     }
@@ -91,6 +98,7 @@ void selectionSort(Cucian *laundry, int jumlah)
 {
     for (int i = 0; i < jumlah - 1; i++) {
         int minIdx = i;
+    
         for (int j = i + 1; j < jumlah; j++) {
             if (laundry[j].nama_pelanggan < laundry[minIdx].nama_pelanggan) {
                 minIdx = j;
@@ -208,10 +216,15 @@ void editData(Cucian *laundry, int jumlah)
     for (int i = 0; i < jumlah; i++) {
         if (laundry[i].id == id) {
             cin.ignore();
-            cout << "Nama Baru: "; getline(cin, laundry[i].nama_pelanggan);
-            cout << "Jenis Pakaian Baru: "; getline(cin, laundry[i].jenis_pakaian);
+            cout << "Nama Baru: "; 
+            getline(cin, laundry[i].nama_pelanggan);
+            
+            cout << "Jenis Pakaian Baru: "; 
+            getline(cin, laundry[i].jenis_pakaian);
+            
             cout << "Berat Baru: "; cin >> laundry[i].berat;
             laundry[i].total_harga = laundry[i].berat * HARGA_PER_KG;
+            
             cout << "Data berhasil diupdate!\n";
             ditemukan = true;
             break;
@@ -284,6 +297,7 @@ int loadDataDariFile(Cucian *laundry, int maxData)
     cout << "Data berhasil dibaca dari file.\n";
     return count;
 }
+
 int main() 
 {
     const int MAX = 100;
@@ -292,7 +306,8 @@ int main()
 
     int pilihan;
 
-    do {
+    do 
+    {
         cout << "\n==== MENU LAUNDRY ====\n";
         cout << "1. Input Data Cucian\n";
         cout << "2. Tampilkan Data\n";
@@ -307,7 +322,8 @@ int main()
         cout << "Pilih menu: ";
         cin >> pilihan;
 
-        switch (pilihan) {
+        switch (pilihan) 
+        {
             case 1: {
                 int n;
                 cout << "Jumlah data yang ingin ditambahkan: ";
