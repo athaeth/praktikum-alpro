@@ -91,15 +91,15 @@ void inputData() {
         getline(cin, nama);
 
         do {
-            cout << "Masukkan jenis pakaian (Baju/Celana/Jaket/Selimut/Karpet): ";
+            cout << "Masukkan jenis cucian (Baju/Celana/Jaket/Selimut/Karpet): ";
             getline(cin, jenis);
             if (!validasiJenisPakaian(jenis)) {
-                cout << "Jenis pakaian tidak valid. Silakan coba lagi.\n";
+                cout << "Jenis cucian tidak valid. Silakan coba lagi.\n";
             }
         } while (!validasiJenisPakaian(jenis));
 
         do {
-            cout << "Masukkan berat pakaian (kg, > 0): ";
+            cout << "Masukkan berat cucian (kg, > 0): ";
             cin >> berat;
             if (berat <= 0) {
                 cout << "Berat harus lebih dari 0. Silakan coba lagi.\n";
@@ -330,13 +330,14 @@ void simpanFile() {
     cout << "Data berhasil disimpan ke file 'dataLaundry.txt'.\n";
 }
 
-// Fungsi membaca data laundry dari file
+// Fungsi membaca data laundry dari file dan langsung menampilkannya
 void bacaFile() {
     ifstream file("dataLaundry.txt");
     if (!file.is_open()) {
         cout << "File dataLaundry.txt tidak ditemukan.\n";
         return;
     }
+
     string line;
     getline(file, line);
     if (line != "DATA_LAUNDRY") {
@@ -344,37 +345,60 @@ void bacaFile() {
         file.close();
         return;
     }
+
     file >> jumlahData;
     clearInputBuffer();
+
     if (jumlahData > MAX) {
         cout << "Jumlah data dalam file melebihi kapasitas.\n";
         file.close();
         jumlahData = 0;
         return;
     }
+
     for (int i = 0; i < jumlahData; i++) {
-        getline(file, line); // Buat pindah baris sisa newline
+        getline(file, line); // untuk menghapus newline sisa
         getline(file, line);
         size_t pos1 = line.find(';');
         size_t pos2 = line.find(';', pos1 + 1);
         size_t pos3 = line.find(';', pos2 + 1);
+
         if (pos1 == string::npos || pos2 == string::npos || pos3 == string::npos) {
-            cout << "Format data baris ke-" << i+1 << " salah.\n";
+            cout << "Format data baris ke-" << i + 1 << " salah.\n";
             jumlahData = i;
             break;
         }
+
         data[i].namaPelanggan = line.substr(0, pos1);
         data[i].jenisPakaian = line.substr(pos1 + 1, pos2 - pos1 - 1);
         data[i].berat = stof(line.substr(pos2 + 1, pos3 - pos2 - 1));
         data[i].totalHarga = stoi(line.substr(pos3 + 1));
     }
+
     getline(file, line);
     if (line != "END_DATA") {
         cout << "File tidak memiliki footer data yang valid.\n";
     }
+
     file.close();
     cout << "Data berhasil dibaca dari file.\n";
+
+    // Langsung tampilkan data di terminal
+    if (jumlahData > 0) {
+        cout << "\n--- Data Laundry dari File ---\n";
+        cetakHeaderTabel();
+        for (int i = 0; i < jumlahData; i++) {
+            cout << left << setw(20) << data[i].namaPelanggan
+                 << setw(12) << data[i].jenisPakaian
+                 << setw(8) << fixed << setprecision(2) << data[i].berat
+                 << " Rp " << setw(10) << right << data[i].totalHarga << endl;
+        }
+        cout << string(54, '=') << endl;
+    } else {
+        cout << "Tidak ada data yang ditampilkan.\n";
+    }
 }
+
 
 // Fungsi mengelompokkan data ke array 2D berdasarkan jenis pakaian
 void kelompokkanData() {
